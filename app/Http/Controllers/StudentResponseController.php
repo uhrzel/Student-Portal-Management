@@ -83,8 +83,22 @@ class StudentResponseController extends Controller
             }
         }
 
-        return view('student-responses.show', compact('evaluation', 'teacher', 'phases', 'responses'));
+        $ratings = QuestionResponse::selectRaw('rating, COUNT(*) as count')
+            ->groupBy('rating')
+            ->pluck('count', 'rating')
+            ->toArray();
+
+        // Ensure all ratings (1 to 5) are accounted for
+        $defaultRatings = [1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0];
+        $overallSummary = array_replace($defaultRatings, $ratings);
+
+
+
+        return view('student-responses.show', compact('evaluation', 'teacher', 'phases', 'responses', 'overallSummary'));
     }
+
+
+
 
     public function store(Request $request, Evaluation $evaluation)
     {

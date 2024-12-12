@@ -82,7 +82,7 @@ class Create extends Component
 
             foreach ($phaseData['questions'] as $questionIndex => $questionData) {
                 $phase->questions()->create([
-                    'question_text' => $questionData['question'],
+                    'question' => $questionData['question'],
                     'order' => $questionIndex + 1,
                 ]);
             }

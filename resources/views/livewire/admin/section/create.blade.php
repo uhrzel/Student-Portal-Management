@@ -55,23 +55,32 @@
 
                         <!-- Teacher -->
                         <div>
+                            <!-- Teacher Dropdown -->
                             <x-label class="text-sm/6 text-gray-900" for="user_id">Teacher</x-label>
                             <div class="mt-2.5">
+                                <!-- Dropdown for Teachers, disabled until a department is selected -->
                                 <select wire:model="user_id" name="user_id" id="user_id"
                                     class="block w-full rounded-md shadow-gray-400 shadow-md border-0 px-3.5 py-2 text-gray-900 sm:text-sm/6"
                                     {{ !$department_id ? 'disabled' : '' }}>
+                                    <!-- Prompt user to select department if not selected yet -->
                                     <option value="">{{ !$department_id ? 'Select a department first' : 'Select Teacher' }}</option>
+
+                                    <!-- Populate teachers dynamically based on selected department -->
                                     @forelse ($users as $user)
                                     <option value="{{ $user->id }}">{{ $user->name }}</option>
                                     @empty
+                                    <!-- Message when no teachers are found -->
                                     <option disabled>No teachers found in this department</option>
                                     @endforelse
                                 </select>
+
+                                <!-- Display validation error for 'user_id' -->
                                 @error('user_id')
                                 <span class="text-red-500 text-sm">{{ $message }}</span>
                                 @enderror
                             </div>
                         </div>
+
 
                         <!-- Room -->
                         <div>
@@ -134,24 +143,38 @@
 
                         <!-- Students -->
                         <div>
+                            <!-- Students Dropdown with Search Functionality -->
                             <x-label class="text-sm/6 text-gray-900" for="student_ids">Students</x-label>
                             <div class="mt-2.5">
+                                <!-- Real-time search input -->
+                                <input wire:model="searchQuery" type="text" class="block w-full rounded-md shadow-gray-400 shadow-md border-0 px-3.5 py-2 text-gray-900 sm:text-sm/6 mb-2" placeholder="Search for students..." />
+
+                                <!-- Students dropdown with multiple selection -->
                                 <select wire:model="student_ids" name="student_ids[]" id="student_ids"
                                     class="block w-full rounded-md shadow-gray-400 shadow-md border-0 px-3.5 py-2 text-gray-900 sm:text-sm/6"
                                     multiple
                                     {{ !$department_id ? 'disabled' : '' }}>
-                                    @forelse ($students as $student)
+                                    <!-- Populate students dynamically based on department and search query -->
+                                    @forelse ($filteredStudents as $student)
                                     <option value="{{ $student->id }}">{{ $student->name }}</option>
                                     @empty
-                                    <option disabled>No students found in this department</option>
+                                    <!-- Display message when no students are found -->
+                                    @if(strlen($searchQuery) > 0)
+                                    <option disabled>No students found for "{{ $searchQuery }}"</option>
+                                    @else
+                                    <option disabled>No students available</option>
+                                    @endif
                                     @endforelse
                                 </select>
+
+                                <!-- Validation error message -->
                                 @error('student_ids')
                                 <span class="text-red-500 text-sm">{{ $message }}</span>
                                 @enderror
                             </div>
                             <p class="mt-1 text-sm text-gray-500">Hold Ctrl/Cmd to select multiple students</p>
                         </div>
+
 
 
                         <!-- Existing Section Times -->

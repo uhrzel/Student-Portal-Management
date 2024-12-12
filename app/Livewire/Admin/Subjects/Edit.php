@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\Subjects;
 
 use Livewire\Component;
 use App\Models\Subject;
+use App\Models\Department;
 
 class Edit extends Component
 {
@@ -31,6 +32,8 @@ class Edit extends Component
             'name' => $this->name,
             'code' => $this->code,
             'description' => $this->description,
+            'department_id' => $this->department_id,
+
         ]);
 
         toastr()->success('Subject updated successfully');
@@ -39,6 +42,7 @@ class Edit extends Component
 
     public function render()
     {
-        return view('livewire.admin.subjects.edit');
+        $departments = Department::all();
+        return view('livewire.admin.subjects.edit', compact('departments'));
     }
 }

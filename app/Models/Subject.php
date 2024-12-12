@@ -11,7 +11,7 @@ class Subject extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['name', 'code', 'description', 'is_active'];
+    protected $fillable = ['name', 'code', 'description', 'department_id', 'is_active'];
 
     public function evaluations(): HasMany
     {

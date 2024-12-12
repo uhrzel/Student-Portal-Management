@@ -72,6 +72,35 @@
                                         chart.render();
                                     });
                                 </script>
+
+                                <div class="mt-4">
+                                    <h4 class="text-lg font-semibold text-gray-800">Summary of Ratings:</h4>
+
+                                    @php
+                                    // Find the rating with the maximum count
+                                    $maxRating = array_keys($ratings, max($ratings))[0];
+
+                                    // Define descriptive summaries based on the rating
+                                    $descriptions = [
+                                    1 => 'The responses indicate significant dissatisfaction or a poor experience with this question. There may be a need for immediate attention or improvements in this area.',
+                                    2 => 'The responses suggest a below-average experience, pointing to areas that could use some improvement.',
+                                    3 => 'The responses reflect a neutral or average experience, indicating room for growth to achieve higher satisfaction.',
+                                    4 => 'The responses indicate a good experience overall, with room to further improve to reach excellence.',
+                                    5 => 'The responses overwhelmingly show a high level of satisfaction or an excellent experience with this question.'
+                                    ];
+                                    @endphp
+
+                                    <p class="text-gray-600">
+                                        Based on the responses, the most common rating given was
+                                        <strong>{{ $maxRating }}</strong>. {{ $descriptions[$maxRating] }}
+                                    </p>
+                                    <p class="text-gray-600 mt-4">
+                                        The responses reveal a clear pattern in how participants perceive this question. A significant number of participants expressed highly positive feedback, while others shared a more moderate or critical perspective. This distribution highlights the varying sentiments and suggests areas where improvements or reinforcements may be necessary to address diverse opinions.
+                                    </p>
+
+                                </div>
+
+
                             </div>
                             @endforeach
                         </div>

@@ -118,9 +118,9 @@
             </div>
             <div>
                 <h1 class="text-white text-lg font-bold">{{ Auth::user()->name }}</h1>
-                <p class="text-white text-sm font-semibold">3rd year, BSIT</p>
+                <!--            <p class="text-white text-sm font-semibold">3rd year, BSIT</p> -->
                 <p class="text-white text-sm">{{ Auth::user()->email }}</p>
-                <p class="text-white text-sm">Second Semester AY 2024-2025</p>
+                <!--    <p class="text-white text-sm">Second Semester AY 2024-2025</p> -->
                 <p class="text-lime-400 text-sm">ENROLLED</p>
             </div>
         </div>

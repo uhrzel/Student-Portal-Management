@@ -118,6 +118,8 @@
                                 </button>
                             </div>
 
+
+
                             @if($grade && $grade->student_id === auth()->id())
                             <div x-data="{ 
                             show: false,
@@ -376,10 +378,29 @@
                             @endif
                         </div>
                     </div>
+
                 </div>
             </div>
             @endforeach
             @endforeach
+        </div>
+        <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-4" style="margin-top: 50px;">
+            <h1 class="uppercase text-2xl font-bold text-yellow-700 text-center">Your Gateway to success welcome back. {{ config('app.name') }}</h1>
+        </div>
+        <h1 class="uppercase text-2xl font-bold text-yellow-700 text-start my-8">Mission and Vision</h1>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-lime-900 overflow-hidden shadow-xl sm:rounded-lg p-4">
+                <div class="flex flex-col justify-center items-start rounded-lg p-4">
+                    <p class="text-white text-start text-xl font-bold">Mission</p>
+                    <h1 class="font-bold text-white justify-normal">Golden Gate Colleges, as a private non-sectarian institution, offers learners and scholars excellent multidisciplinary programs through relevant instruction, research, scientific training, and community development within the perspective of Christian ideals and values to improve Filipino quality of life.</h1>
+                </div>
+            </div>
+            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-4">
+                <div class="flex flex-col justify-center items-start rounded-lg p-4">
+                    <p class="text-gray-700 text-start text-xl font-bold">Vision</p>
+                    <h1 class="font-bold text-gray-700 justify-normal">A center of educational excellence whose graduate are global are global, imbued with high moral values, socially responsible, and service oriented.</h1>
+                </div>
+            </div>
         </div>
     </div>
 </div>

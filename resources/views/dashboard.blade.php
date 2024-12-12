@@ -17,7 +17,7 @@
 
                     <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-4">
                         <div class="flex flex-col justify-center items-center border-2 border-gray-200 rounded-lg p-4">
-                            <x-application-logo class="w-20 h-20" />
+                            <img src="{{ asset('images/students.png') }}" class="w-20 h-20">
                             <h1 class="font-bold text-gray-700 text-start">Total Students <span class="text-gray-700 text-sm my-2">
                                     @php
                                     $totalStudents = App\Models\User::whereHas('roles', function($query) {
@@ -28,9 +28,9 @@
                                 </span> </h1>
                         </div>
                     </div>
-                    <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-4">
+                    <div class=" bg-white overflow-hidden shadow-xl sm:rounded-lg p-4">
                         <div class="flex flex-col justify-center items-center border-2 border-gray-200 rounded-lg p-4">
-                            <x-application-logo class="w-20 h-20" />
+                            <img src="{{ asset('images/teacher.png') }}" class="w-20 h-20">
                             <h1 class="font-bold text-gray-700 text-start">Total Professors <span class="text-gray-700 text-sm my-2">
                                     @php
                                     $totalTeachers = App\Models\User::whereHas('roles', function($query) {
@@ -49,7 +49,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 my-8 gap-4">
                     <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-4">
                         <div class="flex flex-col justify-center items-center border-2 border-gray-200 rounded-lg p-4">
-                            <x-application-logo class="w-20 h-20" />
+                            <img src="{{ asset('images/staff.png') }}" class="w-20 h-20">
                             <h1 class="font-bold text-gray-700 text-start">Total staff <span class="text-gray-700 text-sm my-2">
                                     @php
                                     $totalStaff = App\Models\User::whereHas('roles', function($query) {
@@ -62,7 +62,7 @@
                     </div>
                     <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-4">
                         <div class="flex flex-col justify-center items-center border-2 border-gray-200 rounded-lg p-4">
-                            <x-application-logo class="w-20 h-20" />
+                            <img src="{{ asset('images/department.png') }}" class="w-20 h-20">
                             <h1 class="font-bold text-gray-700 text-start">Total Department <span class="text-gray-700 text-sm my-2">
                                     @php
                                     $totalDepartment = App\Models\Department::count();
@@ -80,13 +80,13 @@
                     <div class="bg-lime-900 overflow-hidden shadow-xl sm:rounded-lg p-4">
                         <div class="flex flex-col justify-center items-start rounded-lg p-4">
                             <p class="text-white text-start text-xl font-bold">Mission</p>
-                            <h1 class="font-bold text-white text-center">Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio, praesentium? Aperiam ab neque quibusdam ex?</h1>
+                            <h1 class="font-bold text-white justify-normal">Golden Gate Colleges, as a private non-sectarian institution, offers learners and scholars excellent multidisciplinary programs through relevant instruction, research, scientific training, and community development within the perspective of Christian ideals and values to improve Filipino quality of life.</h1>
                         </div>
                     </div>
                     <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-4">
                         <div class="flex flex-col justify-center items-start rounded-lg p-4">
                             <p class="text-gray-700 text-start text-xl font-bold">Vision</p>
-                            <h1 class="font-bold text-gray-700 text-center">Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio, praesentium? Aperiam ab neque quibusdam ex?</h1>
+                            <h1 class="font-bold text-gray-700 justify-normal">A center of educational excellence whose graduate are global are global, imbued with high moral values, socially responsible, and service oriented.</h1>
                         </div>
                     </div>
                 </div>

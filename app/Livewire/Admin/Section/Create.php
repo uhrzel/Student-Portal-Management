@@ -29,13 +29,18 @@ class Create extends Component
     public $semester;
     public $year_level;
     public $department_id;
+    public $subjects = []; // Add the subjects property
+    public $searchQuery = ''; // For real-time search
+    public $filteredStudents = [];
 
     public function mount()
     {
         $this->rooms = Room::all();
         $this->users = collect();
         $this->students = collect();
+        $this->subjects = collect(); // Initialize subjects as an empty collection
         $this->department_id = null;
+        $this->filteredStudents = collect();
     }
 
     public function updatedDepartmentId($value)
@@ -61,6 +66,12 @@ class Create extends Component
                 })
                 ->get();
 
+            // Apply the search filter if there's a search query
+            $this->applySearchFilter();
+
+            // Fetch subjects based on the department_id
+            $this->subjects = Subject::where('department_id', $value)->get();
+
             // Add debug logging
             \Log::info('Department ID:', ['id' => $value]);
             \Log::info('Teachers found:', ['count' => $this->users->count(), 'teachers' => $this->users->pluck('name')]);
@@ -68,11 +79,31 @@ class Create extends Component
         } else {
             $this->users = collect();
             $this->students = collect();
+            $this->subjects = collect(); // Reset subjects when no department is selected
         }
 
         // Reset selections
         $this->user_id = null;
         $this->student_ids = [];
+    }
+
+    public function updatedSearchQuery()
+    {
+        // Apply the search filter whenever the search query is updated
+        $this->applySearchFilter();
+    }
+
+    private function applySearchFilter()
+    {
+        // Only apply search if students are available
+        if ($this->students->isNotEmpty()) {
+            // Filter the students based on the search query (case insensitive)
+            $this->filteredStudents = $this->students->filter(function ($student) {
+                return strpos(strtolower($student->name), strtolower($this->searchQuery)) !== false;
+            });
+        } else {
+            $this->filteredStudents = collect(); // If no students, clear the filtered list
+        }
     }
 
     public function updatedRoomId()
@@ -128,7 +159,7 @@ class Create extends Component
                 'semester' => $this->semester,
                 'year_level' => $this->year_level,
                 'department_id' => $this->department_id,
-                'evaluation_id' => $this->evaluation_id,
+                'evaluation_id' => null,
             ]);
 
             // Create room_section_student records for each selected student
@@ -142,14 +173,16 @@ class Create extends Component
             return redirect()->route('admin.sections')->with('success', 'Section created successfully.');
         });
     }
+
     public function render()
     {
         return view('livewire.admin.section.create', [
             'departments' => Department::all(),
             'rooms' => $this->rooms,
-            'subjects' => Subject::all(),
+            'subjects' => $this->subjects,
             'existingSections' => $this->existingSections,
             'users' => $this->users,
+            'filteredStudents' => $this->filteredStudents,
             'students' => $this->students,
         ]);
     }
