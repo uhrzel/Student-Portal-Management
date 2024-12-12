@@ -1,0 +1,1 @@
+<img {{$attributes}} src="/images/application-logo.png" alt="logo">
