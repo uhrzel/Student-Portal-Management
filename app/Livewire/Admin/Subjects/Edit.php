@@ -8,7 +8,7 @@ use App\Models\Department;
 
 class Edit extends Component
 {
-    public $name, $code, $description;
+    public $name, $code, $description, $department_id;
     public $subject_id;
     public $subject;
 
@@ -24,16 +24,23 @@ class Edit extends Component
         $this->name = $this->subject->name;
         $this->code = $this->subject->code;
         $this->description = $this->subject->description;
+        $this->department_id = $this->subject->department_id; // Ensure department_id is loaded
     }
 
     public function updateSubject()
     {
+        $this->validate([
+            'name' => 'required|string|max:255',
+            'code' => 'required|string|max:50',
+            'description' => 'nullable|string|max:255',
+            'department_id' => 'required|exists:departments,id',
+        ]);
+
         $this->subject->update([
             'name' => $this->name,
             'code' => $this->code,
             'description' => $this->description,
             'department_id' => $this->department_id,
-
         ]);
 
         toastr()->success('Subject updated successfully');
