@@ -13,11 +13,24 @@ class DepartmentSeeder extends Seeder
      */
     public function run(): void
     {
+        // Insert departments with provided courses
         DB::table('departments')->insert([
-            ['id' => 1, 'name' => 'Department 1', 'course' => 'Bachelor of Science in Information Technology'],
-            ['id' => 2, 'name' => 'Department 2', 'course' => 'Bachelor of Science in Biology'],
+            ['id' => 1, 'name' => 'Department 1', 'course' => 'Bachelor of Science in Chemical Engineering'],
+            ['id' => 2, 'name' => 'Department 2', 'course' => 'Bachelor of Science in Information Technology'],
+            ['id' => 3, 'name' => 'Department 3', 'course' => 'Bachelor of Science in Nursing'],
+            ['id' => 4, 'name' => 'Department 4', 'course' => 'Caregiving NC II'],
+            ['id' => 5, 'name' => 'Department 5', 'course' => 'Bachelor of Elementary Education'],
+            ['id' => 6, 'name' => 'Department 6', 'course' => 'Bachelor of Secondary Education'],
+            ['id' => 7, 'name' => 'Department 7', 'course' => 'Bachelor of Science in Business Administration'],
+            ['id' => 8, 'name' => 'Department 8', 'course' => 'Bachelor of Science in Accountancy'],
+            ['id' => 9, 'name' => 'Department 9', 'course' => 'Bachelor of Science in Entrepreneurship'],
+            ['id' => 10, 'name' => 'Department 10', 'course' => 'Bachelor of Science in Accountancy'],
+            ['id' => 11, 'name' => 'Department 11', 'course' => 'Bachelor of Science in Entrepreneurship'],
+            ['id' => 12, 'name' => 'Department 12', 'course' => 'Bachelor of Science in Accounting Management'],
+            ['id' => 13, 'name' => 'Department 13', 'course' => 'Bachelor of Science in Accounting Information System'],
         ]);
 
+        // Check if teacher data exists and assign teachers to departments
         $teacherExists = DB::table('users')
             ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
             ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
@@ -32,6 +45,7 @@ class DepartmentSeeder extends Seeder
             ]);
         }
 
+        // Check if student data exists and assign students to departments
         $studentExists = DB::table('users')
             ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
             ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
@@ -46,6 +60,7 @@ class DepartmentSeeder extends Seeder
             ]);
         }
 
-        Department::factory()->count(10)->create();
+        // Optionally, you can create additional departments using factories if needed
+        // Department::factory()->count(10)->create();
     }
 }
