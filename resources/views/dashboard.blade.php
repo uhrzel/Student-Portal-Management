@@ -92,6 +92,7 @@
                 </div>
 
                 @if(auth()->user()->hasRole('teacher'))
+                <livewire:home-filter />
                 <!-- Teacher Dashboard Student Count -->
                 <h1 class="uppercase text-2xl font-bold text-yellow-700 text-start my-8">Student Count</h1>
                 @php
