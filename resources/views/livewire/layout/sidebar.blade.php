@@ -19,12 +19,12 @@
             @if(auth()->user()->hasRole('dean'))
             <!-- Class Schedules -->
             <li>
-                <button onclick=toggleSubMenu(this) class=" dropdown-btn w-full text-left rounded-lg p-2 flex items-center gap-4 text-gray-900 hover:bg-gray-100  cursor-pointer bg-transparent border-0">
+                <button onclick="toggleSubMenu(this)" class="dropdown-btn w-full text-left rounded-lg p-2 flex items-center gap-4 text-gray-900 hover:bg-gray-100 cursor-pointer bg-transparent border-0">
                     <x-icons.building-library-icon />
                     <span class="text-gray-700 text-xs">Classes</span>
                     <x-icons.arrow-down-icon />
                 </button>
-                <ul class="sub-menu bg-gray-50 rounded-md  transition-[grid-template-rows] duration-300 ease-in-out group-[.show]:grid-rows-[1fr] grid-rows-[0fr]">
+                <ul class="sub-menu bg-gray-50 rounded-md transition-[grid-template-rows] duration-300 ease-in-out group-[.show]:grid-rows-[1fr] grid-rows-[0fr]">
                     <div class="overflow-hidden">
                         <!-- Buildings -->
                         <li class="active">
@@ -36,8 +36,7 @@
                             </a>
                         </li>
 
-
-                        <!-- Assets -->
+                        <!-- Departments -->
                         <li class="active">
                             <a wire:navigate href="{{ route('admin.departments') }}"
                                 class="rounded-lg p-2 flex items-center gap-4 text-blue-600 hover:bg-gray-100 no-underline {{ request()->routeIs('admin.departments') ? 'bg-gray-200' : '' }}">
@@ -46,8 +45,7 @@
                                 <p class="hidden md:block bg-blue-500 text-white px-2 py-1 rounded-md text-xs">{{ $departmentsCount }}</p>
                             </a>
                         </li>
-                        @endif
-                        @if(auth()->user()->hasRole('dean'))
+
                         <!-- Rooms -->
                         <li class="active">
                             <a wire:navigate href="{{ route('admin.rooms') }}"
@@ -57,7 +55,6 @@
                                 <p class="hidden md:block bg-blue-500 text-white px-2 py-1 rounded-md text-xs">{{ $roomsCount }}</p>
                             </a>
                         </li>
-
 
                         <!-- Subjects -->
                         <li class="active">
@@ -69,7 +66,6 @@
                             </a>
                         </li>
 
-
                         <!-- Sections -->
                         <li class="active">
                             <a wire:navigate href="{{ route('admin.sections') }}"
@@ -79,21 +75,18 @@
                                 <p class="hidden md:block bg-blue-500 text-white px-2 py-1 rounded-md text-xs">{{ $sectionsCount }}</p>
                             </a>
                         </li>
-                        @endif
                     </div>
                 </ul>
             </li>
 
-
-            @if(auth()->user()->hasRole('dean'))
             <!-- Evaluations -->
             <li>
-                <button onclick=toggleSubMenu(this) class=" dropdown-btn w-full text-left rounded-lg p-2 flex items-center gap-4 text-gray-900 hover:bg-gray-100  cursor-pointer bg-transparent border-0">
+                <button onclick="toggleSubMenu(this)" class="dropdown-btn w-full text-left rounded-lg p-2 flex items-center gap-4 text-gray-900 hover:bg-gray-100 cursor-pointer bg-transparent border-0">
                     <x-icons.newspaper-icon />
                     <span class="text-gray-700 text-xs">Evaluations</span>
                     <x-icons.arrow-down-icon />
                 </button>
-                <ul class="sub-menu bg-gray-50 rounded-md  transition-[grid-template-rows] duration-300 ease-in-out group-[.show]:grid-rows-[1fr] grid-rows-[0fr]">
+                <ul class="sub-menu bg-gray-50 rounded-md transition-[grid-template-rows] duration-300 ease-in-out group-[.show]:grid-rows-[1fr] grid-rows-[0fr]">
                     <div class="overflow-hidden">
                         <li>
                             <a wire:navigate href="{{ route('admin.evaluations') }}"
@@ -120,6 +113,7 @@
                 </ul>
             </li>
             @endif
+
 
             @if(auth()->user()->hasRole('admin'))
             <!-- Settings -->

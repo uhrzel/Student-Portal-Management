@@ -15,6 +15,7 @@ class Create extends Component
     public $course;
     public $selectedTeachers = [];
     public $selectedStudents = [];
+    public $searchStudents = ''; // New property for search input
 
     public function storeDepartment()
     {
@@ -59,9 +60,16 @@ class Create extends Component
 
     public function render()
     {
+        $students = User::role('student')
+            ->whereNotIn('id', DepartmentStudents::pluck('student_id'))
+            ->when($this->searchStudents, function ($query) {
+                $query->where('name', 'like', '%' . $this->searchStudents . '%');
+            })
+            ->get();
+
         return view('livewire.admin.department.create', [
             'teachers' => User::role('teacher')->get(),
-            'students' => User::role('student')->get(),
+            'students' => $students,
             'courses' => [
                 'BSChE' => 'Bachelor of Science in Chemical Engineering',
                 'BSIT' => 'Bachelor of Science in Information Technology',
@@ -72,7 +80,7 @@ class Create extends Component
                 'BSBA' => 'Bachelor of Science in Business Administration',
                 'BSA' => 'Bachelor of Science in Accountancy',
                 'BSEnt' => 'Bachelor of Science in Entrepreneurship',
-                'BSAM' => 'Bachelor of Science in Accounting Management'
+                'BSAM' => 'Bachelor of Science in Accounting Management',
             ],
         ]);
     }

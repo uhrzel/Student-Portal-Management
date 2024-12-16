@@ -24,11 +24,15 @@
                 <x-label for="email" value="{{ __('Email') }}" />
                 <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
             </div>
-
-            <div class="mt-4">
+            <div class="mt-4 relative">
                 <x-label for="password" value="{{ __('Password') }}" />
-                <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="current-password" />
+                <x-input id="password" class="block mt-1 w-full pr-10" type="password" name="password" required autocomplete="current-password" />
+                <!-- Eye icon to toggle password visibility -->
+                <span id="togglePassword" class="absolute right-6 top-2/3 transform -translate-y-1/2 cursor-pointer text-gray-500">
+                    <i class="fas fa-eye"></i>
+                </span>
             </div>
+
 
             <div class="flex flex-row justify-between mt-4">
                 <label for="remember_me" class="flex items-center">
@@ -51,3 +55,22 @@
         </form>
     </x-authentication-card>
 </x-guest-layout>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+<script>
+    // Toggle password visibility
+    document.getElementById('togglePassword').addEventListener('click', function() {
+        const passwordInput = document.getElementById('password');
+        const icon = this.querySelector('i');
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.type = "password";
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    });
+</script>

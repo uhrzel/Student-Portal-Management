@@ -23,7 +23,7 @@
 
             <!-- Form -->
             <div>
-                <form wire:submit.prevent="storeSection" method="POST" class="mx-auto">
+                <form wire:submit.prevent="updateSection" method="POST" class="mx-auto">
                     <div class="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2 isolate bg-white  rounded-md sm:p-4">
                         <!-- Name -->
                         <div>

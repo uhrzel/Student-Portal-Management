@@ -64,6 +64,7 @@ class Create extends Component
                         ->whereColumn('department_students.student_id', 'users.id')
                         ->where('department_students.department_id', $value);
                 })
+                ->whereDoesntHave('roomSections')  // Filter students without a section
                 ->get();
 
             // Apply the search filter if there's a search query

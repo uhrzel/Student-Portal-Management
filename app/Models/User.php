@@ -88,6 +88,7 @@ class User extends Authenticatable
         return $this->belongsToMany(RoomSection::class, 'room_section_students', 'student_id', 'room_section_id');
     }
 
+
     public function evaluationResponses(): HasMany
     {
         return $this->hasMany(EvaluationResponse::class);
