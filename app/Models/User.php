@@ -42,6 +42,9 @@ class User extends Authenticatable
         'city',
         'state',
         'zip_code',
+        'profile_photo_path',
+        'id_picture_path_front',
+        'id_picture_path_back',
     ];
 
     /**

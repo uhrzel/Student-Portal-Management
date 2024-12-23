@@ -88,6 +88,33 @@ class Create extends Component
         $this->student_ids = [];
     }
 
+    public function updateStudentListNotInTheSubject($value){
+       
+        
+        $this->students = User::role('student')
+        ->whereExists(function ($query) {
+            $query->select(DB::raw(1))
+                ->from('department_students as ds')
+                ->whereColumn('ds.student_id', 'users.id');
+        })
+        ->whereNotExists(function ($query) use ($value) {
+            $query->select(DB::raw(1))
+                ->from('room_sections as rs')
+                ->join('room_section_students as rss', 'rss.room_section_id', 'rs.id')
+                ->whereColumn('rss.student_id', 'users.id')
+                ->where('rs.subject_id', $value);
+        })
+        ->get();
+
+        
+
+        \Log::info('Students found update subject:', ['count' => $this->students->count(), 'students' => $this->students->pluck('name')]);
+
+         // Reset selections
+         $this->user_id = null;
+         $this->student_ids = [];
+    }
+
     public function updatedSearchQuery()
     {
         // Apply the search filter whenever the search query is updated

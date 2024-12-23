@@ -6,10 +6,13 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class Edit extends Component
 {
-    public $email, $name, $user_id, $roles, $selectedRoles;
+    use WithFileUploads;
+    public $email, $name, $user_id, $roles, $selectedRoles, $file, $file1;
+
 
     public function mount($user_id)
     {
@@ -38,15 +41,25 @@ class Edit extends Component
         $validated = $this->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255'],
+            'file' => 'required|file|max:1024', // Max size: 1MB
+            'file1' => 'required|file|max:1024', // Max size: 1MB
         ]);
+        
 
         $validated = User::findOrFail($this->user_id);
 
         if ($validated) {
+            $front = $this->file->store('id-picture', 'public');
+            $back = $this->file1->store('id-picture', 'public');
+
             $validated->update([
                 'name' => $this->name,
                 'email' => $this->email,
+                'id_picture_path_front' => $front,
+                'id_picture_path_back' => $back,
             ]);
+
+           
 
             if ($this->selectedRoles) {
                 $validated->roles()->sync($this->selectedRoles);

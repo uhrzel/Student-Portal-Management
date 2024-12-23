@@ -20,17 +20,24 @@
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, -50%);
-                width: 3.375in;
-                height: 2.125in;
+                width: 100%;
+                height: auto;
+                border: none; /*remove the border for full image */
                 margin: 0;
                 padding: 0;
                 background: white;
                 border-radius: 0.5rem;
-                border: 2px solid rgb(47, 84, 15);
+                /* border: 2px solid rgb(47, 84, 15); */
                 overflow: hidden;
                 display: flex;
                 flex-direction: column;
             }
+
+            #id-card img {
+            width: 100%;
+            height: auto;
+            object-fit: contain; /* Ensures the full image is visible */
+        }
 
             /* Header section */
             #id-card .bg-lime-900 {
@@ -109,6 +116,7 @@
                 display: none !important;
             }
         }
+        
     </style>
     <!-- User Profile -->
     <div class="flex flex-row justify-between items-center space-x-2 bg-lime-900 overflow-hidden shadow-xl sm:rounded-lg p-4">
@@ -146,59 +154,54 @@
             <div class="flex items-center justify-center min-h-screen px-4">
                 <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" @click="showModal = false"></div>
 
-                <div class="relative bg-white rounded-lg shadow-xl max-w-lg w-full">
-                    <!-- Modal Header -->
-                    <div class="flex justify-between items-center p-4 border-b">
-                        <h3 class="text-xl font-semibold">Student ID Card</h3>
-                        <button @click="showModal = false" class="text-gray-500 hover:text-gray-700">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </button>
-                    </div>
+                <!-- <div class="relative bg-white rounded-lg shadow-xl max-w-lg w-full max-h-screen flex flex-col"> -->
+                <div class="relative bg-white rounded-lg shadow-xl w-full h-full max-h-screen flex flex-col overflow-auto">
+    <!-- Modal Header -->
+    <div class="flex justify-between items-center p-4 border-b">
+        <h3 class="text-xl font-semibold">Student ID Card</h3>
+        <button @click="showModal = false" class="text-gray-500 hover:text-gray-700">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+    </div>
 
-                    <!-- ID Card Content -->
-                    <div class="p-6">
-                        <div id="id-card" class="w-full bg-white border-2 border-lime-900 rounded-lg overflow-hidden">
-                            <!-- School Header -->
-                            <div class="bg-lime-900 p-4 text-center">
-                                <x-application-logo class="w-16 h-16 w-auto mx-auto" />
-                                <h2 class="text-white text-xl font-bold mt-2">{{ config('app.name') }}</h2>
-                            </div>
-
-                            <!-- Student Info -->
-                            <div class="p-4 space-y-4">
-                                <div class="flex justify-center">
-                                    <img class="w-32 h-32 rounded-full border-4 border-lime-900 object-cover"
-                                        src="{{ Auth::user()->profile_photo_path ? Storage::url(Auth::user()->profile_photo_path) : Auth::user()->profile_photo_url }}"
-                                        alt="{{ Auth::user()->name }}">
-                                </div>
-
-                                <div class="text-center space-y-2">
-                                    <h3 class="text-xl font-bold text-lime-900">{{ Auth::user()->name }}</h3>
-                                    <p class="text-gray-600 font-semibold">Student ID: {{ Auth::user()->id }}</p>
-                                    <p class="text-gray-600">3rd Year - BSIT Section ABC</p>
-                                    <p class="text-gray-600">Second Semester AY 2024-2025</p>
-                                </div>
-
-                                <!-- Barcode/QR (Optional) -->
-                                <div class="flex justify-center mt-4">
-                                    <!-- Add barcode/QR code here if needed -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Modal Footer -->
-                    <div class="flex justify-end space-x-2 p-4 border-t">
-                        <button @click="printId()" class="bg-lime-900 text-white px-4 py-2 rounded-md hover:bg-lime-800 print:hidden">
-                            Print ID Card
-                        </button>
-                        <button @click="showModal = false" class="bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300 print:hidden">
-                            Close
-                        </button>
-                    </div>
+    <!-- ID Card Content -->
+    <div class="p-6 overflow-y-auto flex-grow">
+       
+        <div id="id-card" class="w-full h-full bg-white border-2 border-lime-900 rounded-lg overflow-hidden flex">
+            <!-- Image Container -->
+            <div class="grid grid-cols-2 gap-2 w-full h-full">
+                <!-- Front Image -->
+                <div class="flex justify-center items-center">
+                    <img 
+                        class="w-full h-full object-cover" 
+                        src="{{ Auth::user()->id_picture_path_front ? Storage::url(Auth::user()->id_picture_path_front) : Auth::user()->profile_photo_url }}" 
+                        alt="Front ID">
                 </div>
+
+                <!-- Back Image -->
+                <div class="flex justify-center items-center">
+                    <img 
+                        class="w-full h-full object-cover" 
+                        src="{{ Auth::user()->id_picture_path_back ? Storage::url(Auth::user()->id_picture_path_back) : Auth::user()->profile_photo_url }}" 
+                        alt="Back ID">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Footer -->
+    <div class="flex justify-end space-x-2 p-4 border-t">
+        <button @click="printId()" class="bg-lime-900 text-white px-4 py-2 rounded-md hover:bg-lime-800 print:hidden">
+            Print ID Card
+        </button>
+        <button @click="showModal = false" class="bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300 print:hidden">
+            Close
+        </button>
+    </div>
+</div>
+
             </div>
         </div>
     </div>
