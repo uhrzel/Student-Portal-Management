@@ -99,6 +99,19 @@ class Edit extends Component
         }
     }
 
+    // private function applySearchFilter()
+    // {
+    //     // Only apply search if students are available
+    //     if ($this->students->isNotEmpty()) {
+    //         // Filter the students based on the search query (case insensitive)
+    //         $this->students = $this->students->filter(function ($student) {
+    //             return strpos(strtolower($student->name), strtolower($this->searchQuery)) !== false;
+    //         });
+    //     } else {
+    //         $this->students = collect(); // If no students, clear the filtered list
+    //     }
+    // }
+
     public function updatedDepartmentId($value)
     {
         if ($value) {
@@ -134,6 +147,34 @@ class Edit extends Component
         // Reset selections
         $this->user_id = null;
         $this->student_ids = [];
+    }
+
+    public function updateStudentListNotInTheSubject($value){
+       
+        //initialize student that has enrolled to that department and its subject
+        $this->students = User::role('student')
+        ->whereExists(function ($query) {
+            $query->select(DB::raw(1))
+                ->from('department_students as ds')
+                ->whereColumn('ds.student_id', 'users.id')
+                ->where('ds.department_id', $this->department_id);
+        })
+        ->whereNotExists(function ($query) use ($value) {
+            $query->select(DB::raw(1))
+                ->from('room_sections as rs')
+                ->join('room_section_students as rss', 'rss.room_section_id', 'rs.id')
+                ->whereColumn('rss.student_id', 'users.id')
+                ->where('rs.subject_id', $value);
+        })
+        ->get();
+
+        //$this->applySearchFilter(); //apply filter search to update the frontend
+
+        \Log::info('Students found update subject:', ['count' => $this->students->count(), 'students' => $this->students->pluck('name'), 'dep' => $this->department_id]);
+
+         // Reset selections
+      //   $this->user_id = null;
+       //  $this->student_ids = [];
     }
 
     public function updateSection()

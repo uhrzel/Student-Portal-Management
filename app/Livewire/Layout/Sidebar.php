@@ -18,6 +18,7 @@ class Sidebar extends Component
     public $roomsCount;
     public $sectionsCount;
     public $subjectsCount;
+    public $studentCount;
 
     public function mount()
     {
@@ -27,6 +28,7 @@ class Sidebar extends Component
         $this->roomsCount = Room::count();
         $this->sectionsCount = Section::count();
         $this->subjectsCount = Subject::count();
+        $this->studentCount = User::role('Student')->count();
     }
 
     public function render()

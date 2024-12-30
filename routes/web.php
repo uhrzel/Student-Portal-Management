@@ -6,7 +6,8 @@ use App\Http\Controllers\StudentEvaluationController;
 use App\Http\Controllers\DashboardController;
 
 Route::get('/', function () {
-    return view('welcome');
+    //return view('welcome');
+    return redirect()->route('login');
 });
 
 Route::middleware([
@@ -50,6 +51,11 @@ Route::middleware([
     Route::view('/admin/sections', 'admin.section.index')->name('admin.sections');
     Route::view('/admin/sections/create', 'admin.section.create')->name('admin.sections.create');
     Route::view('/admin/sections/edit/{section_id}', 'admin.section.edit')->name('admin.sections.edit');
+    Route::view('/admin/sections/students', 'admin.section.student')->name('admin.students');
+
+    //students
+    //Route::view('/admin/students', 'admin.student.index')->name('admin.students');
+    
 
     // Evaluations
     Route::view('/admin/evaluations', 'admin.evaluations.index')->name('admin.evaluations');

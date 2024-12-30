@@ -64,7 +64,7 @@ class Create extends Component
                         ->whereColumn('department_students.student_id', 'users.id')
                         ->where('department_students.department_id', $value);
                 })
-                ->whereDoesntHave('roomSections')  // Filter students without a section
+               // ->whereDoesntHave('roomSections')  // Filter students without a section
                 ->get();
 
             // Apply the search filter if there's a search query
@@ -90,12 +90,13 @@ class Create extends Component
 
     public function updateStudentListNotInTheSubject($value){
        
-        
+        //initialize student that has enrolled to that department and its subject
         $this->students = User::role('student')
         ->whereExists(function ($query) {
             $query->select(DB::raw(1))
                 ->from('department_students as ds')
-                ->whereColumn('ds.student_id', 'users.id');
+                ->whereColumn('ds.student_id', 'users.id')
+                ->where('ds.department_id', $this->department_id);
         })
         ->whereNotExists(function ($query) use ($value) {
             $query->select(DB::raw(1))
@@ -106,13 +107,13 @@ class Create extends Component
         })
         ->get();
 
-        
+        $this->applySearchFilter(); //apply filter search to update the frontend
 
-        \Log::info('Students found update subject:', ['count' => $this->students->count(), 'students' => $this->students->pluck('name')]);
+        \Log::info('Students found update subject:', ['count' => $this->students->count(), 'students' => $this->students->pluck('name'), 'dep' => $this->department_id]);
 
          // Reset selections
-         $this->user_id = null;
-         $this->student_ids = [];
+      //   $this->user_id = null;
+       //  $this->student_ids = [];
     }
 
     public function updatedSearchQuery()

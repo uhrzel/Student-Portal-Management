@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use DB;
 
 class Edit extends Component
 {
@@ -30,9 +31,25 @@ class Edit extends Component
     {
         $user = User::findOrFail($this->user_id);
 
+        $user_assigned_role = DB::table('roles as r')
+                                ->join('model_has_roles as mr', 'mr.role_id','r.id')
+                                ->select('r.id','r.name')
+                                ->where('mr.model_id',$this->user_id)
+                                ->first();
+
+        
+
+        \Log::info('user role: '.$user_assigned_role->name);
+
         if ($user) {
             $this->name = $user->name;
             $this->email = $user->email;
+
+            //check if user has assigned roles
+            if(!empty($user_assigned_role)){
+                $this->selectedRoles = $user_assigned_role->id;
+            }
+            
         }
     }
 
