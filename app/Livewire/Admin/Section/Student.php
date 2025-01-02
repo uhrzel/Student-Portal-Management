@@ -54,7 +54,7 @@ class Student extends Component
 
 
         //get all students
-        $query = DB::table('Users as u')
+        $query = DB::table('users as u')
                    ->join('model_has_roles as m', 'm.model_id','u.id')
                    ->leftjoin('room_section_students as rss', 'rss.student_id','u.id')
                    ->leftjoin('room_sections as rs', 'rs.id','rss.room_section_id')

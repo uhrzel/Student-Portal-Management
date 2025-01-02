@@ -63,6 +63,7 @@
                             </div>
 
                             <!--upload  id-->
+                            @if($selectedRoles === 'teacher')
                             <div>
                                 <x-label for="roles" class="text-sm/6 text-gray-900">Front Photo</x-label>
                                 <div class="mt-2.5">
@@ -84,6 +85,7 @@
 
                                 </div>
                             </div>
+                            @endif
                         </div>
                         <div class="flex flex-row space-x-4 mt-4">
                             <x-button type="submit">Submit</x-button>
