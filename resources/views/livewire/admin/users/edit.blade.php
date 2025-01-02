@@ -63,7 +63,8 @@
                             </div>
 
                             <!--upload  id-->
-                            @if($selectedRoles === 'teacher')
+                            
+                            @if($selectedRoles !== 2)
                             <div>
                                 <x-label for="roles" class="text-sm/6 text-gray-900">Front Photo</x-label>
                                 <div class="mt-2.5">
