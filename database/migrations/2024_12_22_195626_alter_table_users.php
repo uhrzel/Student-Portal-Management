@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             //
-            $table->string('id_picture_path_front')->nullable();
-            $table->string('id_picture_path_back')->nullable();
+            $table->longText('id_picture_path_front')->nullable();
+            $table->longText('id_picture_path_back')->nullable();
         });
     }
 

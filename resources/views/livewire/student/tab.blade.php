@@ -176,7 +176,7 @@
                 <div class="flex justify-center items-center">
                     <img 
                         class="w-full h-full object-cover" 
-                        src="{{ Auth::user()->id_picture_path_front ? Storage::url(Auth::user()->id_picture_path_front) : Auth::user()->profile_photo_url }}" 
+                        src="{{ Auth::user()->id_picture_path_front ? 'data:image/png;base64,' . Auth::user()->id_picture_path_front : (Auth::user()->id_picture_path_front ? Storage::url(Auth::user()->id_picture_path_front) : Auth::user()->profile_photo_url) }}" 
                         alt="Front ID">
                 </div>
 
@@ -184,9 +184,10 @@
                 <div class="flex justify-center items-center">
                     <img 
                         class="w-full h-full object-cover" 
-                        src="{{ Auth::user()->id_picture_path_back ? Storage::url(Auth::user()->id_picture_path_back) : Auth::user()->profile_photo_url }}" 
+                        src="{{ Auth::user()->id_picture_path_back ? 'data:image/png;base64,' . Auth::user()->id_picture_path_back : (Auth::user()->id_picture_path_back ? Storage::url(Auth::user()->id_picture_path_back) : Auth::user()->profile_photo_url) }}" 
                         alt="Back ID">
                 </div>
+
             </div>
         </div>
     </div>

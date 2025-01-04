@@ -55,37 +55,68 @@ class Edit extends Component
 
     public function updateUser()
     {
-        $validated = $this->validate([
+
+        $required_fields = [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255'],
-            'file' => 'required|file|max:1024', // Max size: 1MB
-            'file1' => 'required|file|max:1024', // Max size: 1MB
-        ]);
+            'file' => 'required|file|mimes:jpeg,jpg,png|max:1024', // Ensure the file is an image
+            'file1' => 'required|file|mimes:jpeg,jpg,png|max:1024', // Ensure the file is an image
+        ];
+
+        //check if the role is teacher then remove image upload field
+        if($this->selectedRoles === 2){
+            $required_fields = [
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'lowercase', 'email', 'max:255'],
+            ];
+        }
+        $validated = $this->validate($required_fields);
         
+        $user = User::findOrFail($this->user_id);
+        
+        if ($user) {
+            // Store files temporarily to read their content
 
-        $validated = User::findOrFail($this->user_id);
+            $frontBase64 = null;
+            $backBase64 = null;
 
-        if ($validated) {
-            $front = $this->file->store('id-picture', 'public');
-            $back = $this->file1->store('id-picture', 'public');
-
-            $validated->update([
+            if($this->selectedRoles !== 2){
+                $frontPath = $this->file->store('temp', 'public');
+                $backPath = $this->file1->store('temp', 'public');
+            
+                // Convert to Base64
+                $frontFullPath = storage_path('app/public/' . $frontPath);
+                $backFullPath = storage_path('app/public/' . $backPath);
+            
+                $frontBase64 = base64_encode(file_get_contents($frontFullPath));
+                $backBase64 = base64_encode(file_get_contents($backFullPath));
+            }
+           
+        
+            // Update the user with Base64 data
+            $user->update([
                 'name' => $this->name,
                 'email' => $this->email,
-                'id_picture_path_front' => $front,
-                'id_picture_path_back' => $back,
+                'id_picture_path_front' => $frontBase64,
+                'id_picture_path_back' => $backBase64,
             ]);
 
-           
+            if($this->selectedRoles !== 2){
+        
+            // Remove temporary files
+            unlink($frontFullPath);
+            unlink($backFullPath);
 
-            if ($this->selectedRoles) {
-                $validated->roles()->sync($this->selectedRoles);
             }
-
-
+        
+            if ($this->selectedRoles) {
+                $user->roles()->sync($this->selectedRoles);
+            }
+        
             toastr()->success('User updated successfully!');
             return redirect()->route('admin.users');
         }
+        
     }
 
     public function render()
