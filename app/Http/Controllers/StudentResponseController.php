@@ -92,7 +92,7 @@ class StudentResponseController extends Controller
         $defaultRatings = [1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0];
         $overallSummary = array_replace($defaultRatings, $ratings);
 
-
+       // dd($phases);
 
         return view('student-responses.show', compact('evaluation', 'teacher', 'phases', 'responses', 'overallSummary'));
     }

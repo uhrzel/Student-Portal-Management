@@ -27,6 +27,7 @@ class Edit extends Component
         $this->department_id = $this->subject->department_id; // Ensure department_id is loaded
     }
 
+
     public function updateSubject()
     {
         $this->validate([

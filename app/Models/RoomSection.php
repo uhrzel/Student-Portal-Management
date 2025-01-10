@@ -71,6 +71,10 @@ class RoomSection extends Model
         return $this->belongsTo(Department::class);
     }
 
+    public function roomSectionStudents(){
+        return $this->hasMany(RoomSectionStudent::class);
+    }
+
     public function students()
     {
         return $this->belongsToMany(User::class, 'room_section_students', 'room_section_id', 'student_id');

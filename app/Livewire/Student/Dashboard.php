@@ -7,6 +7,7 @@ use Livewire\Component;
 use App\Models\EvaluationResponse;
 use App\Models\StudentGrade;
 use App\Models\RoomSection;
+use App\Models\RoomSectionStudent;
 use App\Http\Controllers\DashboardController;
 
 class Dashboard extends Component
@@ -22,6 +23,7 @@ class Dashboard extends Component
     public $grade = null;
     public $status = null;
     public $rooms;
+    public $academicYear = null;
     public function mount()
     {
         $this->selectedYear = date('Y');
@@ -33,47 +35,113 @@ class Dashboard extends Component
         $this->updateTotalSubjects();
     }
 
-    public function updatedSelectedYear()
+    public function updatedSelectedYearLevel()
     {
         $this->updateTotalSubjects();
     }
+
+    public function updatedAcademicYear()
+    {
+        $this->updateTotalSubjects();
+    }
+
+    public function updated($propertyName)
+    {
+        if (in_array($propertyName, ['selectedYearLevel', 'selectedSemester', 'academicYear'])) {
+            $this->updateTotalSubjects();
+        }
+    }
+
+ 
 
     private function updateTotalSubjects()
     {
         $studentId = auth()->id();
 
-        $this->subjects = Room::whereHas('roomSections', function ($query) use ($studentId) {
-            $query->join('room_section_students', 'room_sections.id', '=', 'room_section_students.room_section_id')
-                ->where('room_section_students.student_id', $studentId)
-                ->when($this->selectedSemester, function ($q) {
-                    $q->where('room_sections.semester', $this->selectedSemester);
-                })
-                ->when($this->selectedYearLevel, function ($q) {
-                    $q->where('room_sections.year_level', $this->selectedYearLevel);
-                });
-        })
-            ->with(['roomSections' => function ($query) use ($studentId) {
-                $query->join('room_section_students', 'room_sections.id', '=', 'room_section_students.room_section_id')
-                    ->where('room_section_students.student_id', $studentId)
-                    ->when($this->selectedSemester, function ($q) {
-                        $q->where('room_sections.semester', $this->selectedSemester);
-                    })
-                    ->when($this->selectedYearLevel, function ($q) {
-                        $q->where('room_sections.year_level', $this->selectedYearLevel);
-                    })
-                    ->with([
-                        'subject',
-                        'teacher',
-                        'section',
-                        'room',
-                        'studentGrades' => function ($q) use ($studentId) {
-                            $q->where('student_id', $studentId);
-                        }
-                    ]);
-            }])
-            ->get();
+        $this->subjects = RoomSection::whereHas('roomSectionStudents', function ($query) use ($studentId) {
+            $query->where('student_id', $studentId);
+        })->with(['roomSectionStudents' => function ($query) use ($studentId) {
+            $query->where('student_id', $studentId);
+        },'subject',
+            'teacher',
+            'section',
+            'room',
+            'studentGrades' => function ($q) use ($studentId) {
+                $q->where('student_id', $studentId);
+            }]);
+        
+        //if selected year level is null get all the records with the student base on the year level
+        if($this->selectedYearLevel != null){
+            $this->subjects =   $this->subjects->where('year_level', $this->selectedYearLevel);
+        }
 
-        $this->totalSubjects = $this->subjects->flatMap->roomSections->count();
+         //if selected semester  is null get all the records with the student base on the semester
+        if($this->selectedSemester != null){
+            $this->subjects =   $this->subjects->where('semester', $this->selectedSemester);
+        }
+
+         //if selected academic year  is null get all the records with the student base on the academic year
+
+        if($this->academicYear != null){
+            $this->subjects =   $this->subjects->where('academic_year', $this->academicYear);
+        }
+
+        //if year level and semester is not null get the record of student base on year and semeter
+
+        if($this->selectedYearLevel != null && $this->selectedSemester != null) {
+            $this->subjects =   $this->subjects->where('year_level', $this->selectedYearLevel)
+                                    ->where('semester', $this->selectedSemester);
+        }
+
+        if($this->selectedYearLevel != null && $this->selectedSemester != null && $this->academicYear != null) {
+            $this->subjects =   $this->subjects->where('year_level', $this->selectedYearLevel)
+                                    ->where('semester', $this->selectedSemester)
+                                    ->where('academic_year', $this->academicYear);
+        }
+      
+        $this->subjects = $this->subjects->get();
+        $this->totalSubjects = $this->subjects->count();
+       
+    
+
+        // $this->subjects = Room::whereHas('roomSections', function ($query) use ($studentId) {
+        //     $query->join('room_section_students', 'room_sections.id', '=', 'room_section_students.room_section_id')
+        //         ->where('room_section_students.student_id', $studentId)
+        //         ->when($this->selectedSemester, function ($q) {
+        //             $q->where('room_sections.semester', $this->selectedSemester);
+        //         })
+        //         ->when($this->selectedYearLevel, function ($q) {
+        //             $q->where('room_sections.year_level', $this->selectedYearLevel);
+        //         })
+        //         ->when($this->academicYear, function ($q) {
+        //             $q->where('room_sections.academic_year', $this->academicYear);
+        //         });
+        // })
+        //     ->with(['roomSections' => function ($query) use ($studentId) {
+        //         $query->join('room_section_students', 'room_sections.id', '=', 'room_section_students.room_section_id')
+        //             ->where('room_section_students.student_id', $studentId)
+        //             ->when($this->selectedSemester, function ($q) {
+        //                 $q->where('room_sections.semester', $this->selectedSemester);
+        //             })
+        //             ->when($this->selectedYearLevel, function ($q) {
+        //                 $q->where('room_sections.year_level', $this->selectedYearLevel);
+        //             })
+        //             ->when($this->academicYear, function ($q) {
+        //                 $q->where('room_sections.academic_year', $this->academicYear);
+        //             })
+        //             ->with([
+        //                 'subject',
+        //                 'teacher',
+        //                 'section',
+        //                 'room',
+        //                 'studentGrades' => function ($q) use ($studentId) {
+        //                     $q->where('student_id', $studentId);
+        //                 }
+        //             ]);
+        //     }])
+        //     ->get();
+
+      //$this->totalSubjects = $this->subjects->flatMap->room->count();
     }
 
     public function checkEvaluation($roomSectionId)
@@ -133,7 +201,7 @@ class Dashboard extends Component
             ->where('student_id', auth()->id())
             ->where('is_completed', true)
             ->first();
-
+        \Log::info($evaluationResponse .'-lol');
         return [
             'grade' => $grade,
             'evaluationResponse' => $evaluationResponse

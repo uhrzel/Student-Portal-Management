@@ -32,6 +32,7 @@ class Create extends Component
     public $subjects = []; // Add the subjects property
     public $searchQuery = ''; // For real-time search
     public $filteredStudents = [];
+    public $academic_year;
 
     public function mount()
     {
@@ -169,6 +170,7 @@ class Create extends Component
             'semester' => 'required|in:1st,2nd',
             'year_level' => 'required|in:1st,2nd,3rd,4th',
             'department_id' => 'required|exists:departments,id',
+            'academic_year' => 'required'
         ]);
 
         DB::transaction(function () {
@@ -189,6 +191,7 @@ class Create extends Component
                 'year_level' => $this->year_level,
                 'department_id' => $this->department_id,
                 'evaluation_id' => null,
+                'academic_year' => $this->academic_year
             ]);
 
             // Create room_section_student records for each selected student

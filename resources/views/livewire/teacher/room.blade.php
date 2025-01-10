@@ -183,7 +183,7 @@
                                                                         @php
                                                                         $totalScore = collect($quizzes)->sum('quiz_score');
                                                                         $totalOver = collect($quizzes)->sum('quiz_over');
-                                                                        $percentage = $totalOver > 0 ? round(($totalScore / $totalOver) * 100, 2) : 0;
+                                                                        $percentage = $totalOver > 0 ? round(($totalScore / $totalOver) * 50 + 50, 2) : 0;
                                                                         @endphp
                                                                         <span class="ml-2 px-2 py-1 text-xs rounded-full {{ $percentage >= 75 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
                                                                             {{ $percentage }}%
@@ -231,7 +231,7 @@
                                                                         @php
                                                                         $score = floatval($quiz['quiz_score'] ?? 0);
                                                                         $over = floatval($quiz['quiz_over'] ?? 1);
-                                                                        $quizPercentage = $over > 0 ? round(($score / $over) * 100, 2) : 0;
+                                                                        $quizPercentage = ($over > 0 && $score > 0) ? round(($score / $over) * 50 + 50, 2) : 0;
                                                                         @endphp
                                                                         <span class="px-2 py-1 text-xs rounded-full {{ $quizPercentage >= 75 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
                                                                             {{ $quizPercentage }}%
@@ -286,7 +286,7 @@
                                                         </div>
 
                                                         <div class="mt-4">
-                                                            <label for="grade" class="block text-sm font-medium text-gray-700">Grade (1-5)</label>
+                                                            <label for="grade" class="block text-sm font-medium text-gray-700">Final Grade</label>
                                                             <input type="number"
                                                                 wire:model="grade"
                                                                 step="0.01"

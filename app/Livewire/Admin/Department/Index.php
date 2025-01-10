@@ -37,6 +37,16 @@ class Index extends Component
         return redirect()->back();
     }
 
+    public function updatedSearch()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedarchiveStatus()
+    {
+        $this->resetPage();
+    }
+
     public function forceDeleteDepartment($id)
     {
         $department = Department::withTrashed()->find($id);

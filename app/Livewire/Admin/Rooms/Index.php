@@ -43,6 +43,16 @@ class Index extends Component
         return redirect()->back();
     }
 
+    public function updatedSearch()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedarchiveStatus()
+    {
+        $this->resetPage();
+    }
+
     public function render()
     {
         $query = Room::query()

@@ -13,18 +13,33 @@
                 </header>
 
                 <div class="space-y-8">
+                    @php
+                    $over_all_mean = null;
+                    $mean = null;
+                    @endphp
                     @foreach($phases as $phase)
                     <section class="border-t pt-6">
                         <h3 class="text-xl font-semibold mb-4">{{ $phase->title }}</h3>
                         <div class="space-y-6">
+                            @php
+                            $total_score = null;
+                            $temp_rating = [1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0];
+                            @endphp
                             @foreach($phase->questions as $question)
                             <div class="bg-gray-50 p-4 rounded-lg">
                                 <p class="font-medium text-gray-800 mb-4">{{ $question->question }}</p>
 
                                 @php
                                 $ratings = array_replace([1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0], $question->aggregatedResponses);
-                                @endphp
+                                
+                                
+                                foreach(json_decode(json_encode($ratings),true) as $index => $rates){
+                                   $temp_rating[$index] = $temp_rating[$index] + $rates;
+                                }
 
+                               
+                                @endphp
+                             
                                 <div class="h-64">
                                     <div id="chart{{ $question->id }}"></div>
                                 </div>
@@ -72,7 +87,7 @@
                                         chart.render();
                                     });
                                 </script>
-
+                               
                                 <div class="mt-4">
                                     <h4 class="text-lg font-semibold text-gray-800">Summary of Ratings:</h4>
 
@@ -105,7 +120,34 @@
                             @endforeach
                         </div>
                     </section>
+                        <!--getting the mean of per category-->
+                        @php
+                      
+                        foreach(json_decode(json_encode($temp_rating),true) as $key => $tmp_rate){
+                            
+                            $total_score += $key * $tmp_rate;
+                        }
+                       
+                        $mean = ($total_score / count($phase->questions) );
+                        echo '<h1 style="color:#2b8c06"><strong>Mean:</strong>'.$mean.'</h1>';
+                        $over_all_mean += $mean; 
+                        @endphp
+                       
+                       
                     @endforeach
+                    <br>
+                    <h2 class="text-2xl font-bold">Average Mean:{{ round(($over_all_mean / count($phases)),2)}}</h2><br>
+                    <h2 class="text-2xl font-bold">Remarks:
+                        @if (round(($over_all_mean / count($phases)),2) <= 1.50 )
+                        <span class="bg-red-500 text-white p-2 rounded">Unsatisfactory</span>
+                        @elseif ((round(($over_all_mean / count($phases)),2) > 1.50) && (round(($over_all_mean / count($phases)),2) <= 2.50) )
+                        <span class="bg-green-500 text-white p-2 rounded">Fairly Satisfactory</span>
+                        @elseif ((round(($over_all_mean / count($phases)),2) > 2.50) && (round(($over_all_mean / count($phases)),2) <= 3.50) )
+                        <span class="bg-green-500 text-white p-2 rounded">Satisfactory</span>
+                        @else
+                        <span class="bg-green-500 text-white p-2 rounded">VS</span>
+                        @endif
+                    </h2>
                 </div>
             </div>
         </div>

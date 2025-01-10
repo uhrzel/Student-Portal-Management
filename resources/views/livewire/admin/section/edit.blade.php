@@ -133,6 +133,22 @@
                                     <span class="text-red-500 text-sm">{{ $message }}</span>
                                     @enderror
                                 </div>
+
+                                <br>
+                            <x-label class="text-sm/6 text-gray-900" for="academic_year">Academic Year</x-label>
+                            <div class="mt-2.5">
+                            <select wire:model="academic_year" name="academic_year" id="academic_year" class="block w-full rounded-md shadow-gray-400 shadow-md border-0 px-3.5 py-2 text-gray-900 sm:text-sm/6">
+                                    <option value="">Select Academic Year</option>
+                                    <option value="2023-2024">2023-2024</option>
+                                    <option value="2024-2025">2024-2025</option>
+                                    <option value="2025-2026">2025-2026</option>
+                                    <option value="2026-2027">2026-2027</option>
+                                    <option value="2027-2028">2027-2028</option>
+                                </select>
+                                @error('academic_year')
+                                <span class="text-red-500 text-sm">{{ $message }}</span>
+                                @enderror
+                            </div>
                             </div>
                         </div>
 

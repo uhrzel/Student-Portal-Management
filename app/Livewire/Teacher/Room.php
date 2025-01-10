@@ -114,7 +114,7 @@ class Room extends Component
 
             $quizScores = [
                 'quizzes' => collect($this->quizzes)->map(function ($quiz) {
-                    $percentage = $quiz['quiz_over'] > 0 ? ($quiz['quiz_score'] / $quiz['quiz_over']) * 100 : 0;
+                    $percentage = $quiz['quiz_over'] > 0 ? ($quiz['quiz_score'] / $quiz['quiz_over']) * 50 + 50 : 0;
                     return [
                         'quiz_name' => $quiz['quiz_name'],
                         'quiz_score' => $quiz['quiz_score'],
@@ -125,7 +125,7 @@ class Room extends Component
                 })->toArray(),
                 'quiz_total' => $quizTotal,
                 'quiz_over_total' => $quizOverTotal,
-                'total_percentage' => $quizOverTotal > 0 ? round(($quizTotal / $quizOverTotal) * 100, 2) : 0
+                'total_percentage' => $quizOverTotal > 0 ? round(($quizTotal / $quizOverTotal) * 50 + 50, 2) : 0
             ];
         }
 

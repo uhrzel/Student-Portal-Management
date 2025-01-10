@@ -43,6 +43,15 @@ class Index extends Component
         toastr()->error('User ' . $user->name . ' has been permanently deleted!');
         return redirect()->back();
     }
+    public function updatedSearch()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedarchiveStatus()
+    {
+        $this->resetPage();
+    }
 
     public function render()
     {

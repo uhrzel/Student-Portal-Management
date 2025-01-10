@@ -31,6 +31,7 @@ class Edit extends Component
     public $department_id;
     public $users;
     public $students;
+    public $academic_year;
 
     public function mount($section_id)
     {
@@ -191,6 +192,7 @@ class Edit extends Component
             'semester' => 'required|in:1st,2nd',
             'year_level' => 'required|in:1st,2nd,3rd,4th',
             'department_id' => 'required|exists:departments,id',
+            'academic_year' => 'required'
         ]);
 
         DB::transaction(function () {
@@ -207,6 +209,7 @@ class Edit extends Component
                 'start_date' => $this->start_date,
                 'end_date' => $this->end_date,
                 'semester' => $this->semester,
+                'academic_year' => $this->academic_year
             ]);
 
             // Delete existing student associations

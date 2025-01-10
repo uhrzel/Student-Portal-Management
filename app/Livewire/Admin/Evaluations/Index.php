@@ -24,6 +24,13 @@ class Index extends Component
         toastr()->info('Evaluation ' . $evaluation->title . ' has been deleted successfully!');
     }
 
+    public function updatedSearch()
+    {
+        $this->resetPage();
+    }
+
+   
+
     public function render()
     {
         $query = Evaluation::query()

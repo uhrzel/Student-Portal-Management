@@ -20,6 +20,13 @@ class Index extends Component
         redirect()->back();
     }
 
+    public function updatedSearch()
+    {
+        $this->resetPage();
+    }
+
+   
+
     public function render()
     {
         return view('livewire.admin.roles.index', [
