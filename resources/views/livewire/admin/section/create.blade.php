@@ -211,25 +211,35 @@
 
                         <!-- Start Date -->
                         <div>
-                            <x-label class="text-sm/6 text-gray-900 " for="start_date">Start Date</x-label>
+                            <x-label class="text-sm/6 text-gray-900 " for="start_date">Schedule</x-label>
                             <div class="mt-2.5">
-                                <x-input type="datetime-local" wire:model="start_date" name="start_date" id="start_date" autocomplete="start_date" class="block w-full rounded-md shadow-gray-400 shadow-md border-0 px-3.5 py-2 text-gray-900 sm:text-sm/6" />
-                                @error('start_date')
+                                <!-- <x-input type="datetime-local" wire:model="start_date" name="start_date" id="start_date" autocomplete="start_date" class="block w-full rounded-md shadow-gray-400 shadow-md border-0 px-3.5 py-2 text-gray-900 sm:text-sm/6" />
+                                  -->
+                                  <x-label class="text-sm/6 text-gray-900 " for="Day">Day</x-label>
+                                  <select wire:model="selected_day" id="day" class="block w-full rounded-md shadow-gray-400 shadow-md border-0 px-3.5 py-2 text-gray-900 sm:text-sm/6">
+                                        <option value="">Select a day</option>
+                                        @foreach(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] as $day)
+                                            <option value="{{ $day }}">{{ $day }}</option>
+                                        @endforeach
+                                    </select>
+
+                                    <!-- Time Input -->
+                                    <x-label class="text-sm/6 text-gray-900 " for="Day">Start of Class</x-label>
+                                    <input type="time" wire:model="selected_time" id="time" class="block w-full rounded-md shadow-gray-400 shadow-md border-0 px-3.5 py-2 text-gray-900 sm:text-sm/6" />
+                                    @error('start_date')
+                                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                                    @enderror
+                                    <x-label class="text-sm/6 text-gray-900 " for="Day">End of Class</x-label>
+                                    <input type="time" wire:model="selected_time2" id="time" class="block w-full rounded-md shadow-gray-400 shadow-md border-0 px-3.5 py-2 text-gray-900 sm:text-sm/6" />
+                             
+                                @error('end_date')
                                 <span class="text-red-500 text-sm">{{ $message }}</span>
                                 @enderror
                             </div>
                         </div>
 
                         <!-- End Date -->
-                        <div>
-                            <x-label class="text-sm/6 text-gray-900 " for="end_date">End Date</x-label>
-                            <div class="mt-2.5">
-                                <x-input type="datetime-local" wire:model="end_date" name="end_date" id="end_date" autocomplete="end_date" class="block w-full rounded-md shadow-gray-400 shadow-md border-0 px-3.5 py-2 text-gray-900 sm:text-sm/6" />
-                                @error('end_date')
-                                <span class="text-red-500 text-sm">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
+                      
 
                     </div>
                     <div class="flex flex-row space-x-4 mt-4">

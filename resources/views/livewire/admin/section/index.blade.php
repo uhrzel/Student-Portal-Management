@@ -106,8 +106,8 @@
                                 <th scope="col" class="px-4 py-3">Name</th>
                                 <th scope="col" class="px-4 py-3">Building & Room</th>
                                 <th scope="col" class="px-4 py-3">Subject & Section</th>
-                                <th scope="col" class="px-4 py-3">Start Date</th>
-                                <th scope="col" class="px-4 py-3">End Date</th>
+                                <th scope="col" class="px-4 py-3">Class Start</th>
+                                <th scope="col" class="px-4 py-3">Class End</th>
                                 <th scope="col" class="px-4 py-3">
                                     <span class="sr-only">Actions</span>
                                 </th>
@@ -129,16 +129,16 @@
                                 </td>
                                 <td class="px-4 py-3">
                                     @if(optional($section->roomSection)->start_date)
-                                    <div>{{ optional($section->roomSection)->start_date?->format('M d, Y') }}</div>
-                                    <div class="text-xs text-gray-500">{{ optional($section->roomSection)->start_date?->format('h:i A') }}</div>
+                                    
+                                    <div class="text-xs text-gray-500">{{ optional($section->roomSection)->start_date?->format('l h:i A') }}</div>
                                     @else
                                     -
                                     @endif
                                 </td>
                                 <td class="px-4 py-3">
                                     @if(optional($section->roomSection)->end_date)
-                                    <div>{{ optional($section->roomSection)->end_date?->format('M d, Y') }}</div>
-                                    <div class="text-xs text-gray-500">{{ optional($section->roomSection)->end_date?->format('h:i A') }}</div>
+                                   
+                                    <div class="text-xs text-gray-500">{{ optional($section->roomSection)->end_date?->format('l h:i A') }}</div>
                                     @else
                                     -
                                     @endif

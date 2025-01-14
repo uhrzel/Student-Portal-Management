@@ -12,6 +12,7 @@ use App\Models\RoomSectionStudent;
 use App\Models\Subject;
 use App\Models\Evaluation;
 use App\Models\Department;
+use Carbon\Carbon;
 
 class Create extends Component
 {
@@ -33,6 +34,10 @@ class Create extends Component
     public $searchQuery = ''; // For real-time search
     public $filteredStudents = [];
     public $academic_year;
+    public $selected_day;
+    public $selected_time;
+    public $selected_time2;
+
 
     public function mount()
     {
@@ -43,6 +48,7 @@ class Create extends Component
         $this->department_id = null;
         $this->filteredStudents = collect();
     }
+
 
     public function updatedDepartmentId($value)
     {
@@ -159,20 +165,71 @@ class Create extends Component
 
     public function storeSection()
     {
-        $this->validate([
+
+        $currentDate = Carbon::now()->format('Y-m-d'); // Get the current date
+
+        $fields = [
             'name' => 'required|string|max:255',
             'user_id' => 'required|exists:users,id',
             'room_id' => 'required|exists:rooms,id',
             'student_ids' => 'required|array|min:1',
             'student_ids.*' => 'exists:users,id',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date',
             'semester' => 'required|in:1st,2nd',
             'year_level' => 'required|in:1st,2nd,3rd,4th',
             'department_id' => 'required|exists:departments,id',
             'academic_year' => 'required'
-        ]);
+        ];
+        
 
+        if ($this->selected_day && $this->selected_time) {
+            
+            $dateTime = Carbon::parse("{$currentDate} {$this->selected_time}"); // Combine date and time
+            $this->start_date = $dateTime->format('Y-m-d H:i:s'); // Format as string
+
+        }
+            $fields = [
+                'name' => 'required|string|max:255',
+                'user_id' => 'required|exists:users,id',
+                'room_id' => 'required|exists:rooms,id',
+                'student_ids' => 'required|array|min:1',
+                'student_ids.*' => 'exists:users,id',
+                'semester' => 'required|in:1st,2nd',
+                'year_level' => 'required|in:1st,2nd,3rd,4th',
+                'department_id' => 'required|exists:departments,id',
+                'academic_year' => 'required',
+                'start_date' => 'required',
+            ];
+        
+
+        if ($this->selected_day && $this->selected_time2) {
+           
+            $dateTime2 = Carbon::parse("{$currentDate} {$this->selected_time2}"); // Combine date and time
+            $this->end_date = $dateTime2->format('Y-m-d H:i:s'); // Format as string
+        }
+
+        
+            $fields = [
+                'name' => 'required|string|max:255',
+                'user_id' => 'required|exists:users,id',
+                'room_id' => 'required|exists:rooms,id',
+                'student_ids' => 'required|array|min:1',
+                'student_ids.*' => 'exists:users,id',
+                'semester' => 'required|in:1st,2nd',
+                'year_level' => 'required|in:1st,2nd,3rd,4th',
+                'department_id' => 'required|exists:departments,id',
+                'academic_year' => 'required',
+                'start_date' => 'required',
+                'end_date' => 'required',
+            ];
+        
+            $messages = [
+                'start_date.required' => 'Please select a day or start time',
+                'end_date.required' => 'Please select a day or end time',
+            ];
+
+        $this->validate($fields,$messages);
+       
+        
         DB::transaction(function () {
             // First create the section
             $section = Section::create([
