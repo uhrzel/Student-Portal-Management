@@ -56,6 +56,10 @@ class Edit extends Component
     public function updateUser()
     {
 
+        $user = User::findOrFail($this->user_id);
+
+        
+
         $required_fields = [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255'],
@@ -72,7 +76,7 @@ class Edit extends Component
         }
         $validated = $this->validate($required_fields);
         
-        $user = User::findOrFail($this->user_id);
+       
         
         if ($user) {
             // Store files temporarily to read their content
@@ -94,12 +98,24 @@ class Edit extends Component
            
         
             // Update the user with Base64 data
-            $user->update([
-                'name' => $this->name,
-                'email' => $this->email,
-                'id_picture_path_front' => $frontBase64,
-                'id_picture_path_back' => $backBase64,
-            ]);
+
+            if($this->email != $user->email){
+                $user->update([
+                    'name' => $this->name,
+                    'email' => $this->email,
+                    'id_picture_path_front' => $frontBase64,
+                    'id_picture_path_back' => $backBase64,
+                ]);
+            }else{
+
+                //ignore email if not changed
+                $user->update([
+                    'name' => $this->name,
+                    'id_picture_path_front' => $frontBase64,
+                    'id_picture_path_back' => $backBase64,
+                ]);
+            }
+           
 
             if($this->selectedRoles !== 2){
         

@@ -19,6 +19,7 @@ class Edit extends Component
         $this->room_id = $room_id;
         $this->loadRoomData();
         $this->buildings = Building::all();
+        $this->building_id = $this->room->building_id; // Set the initial value
     }
 
     public function loadRoomData()

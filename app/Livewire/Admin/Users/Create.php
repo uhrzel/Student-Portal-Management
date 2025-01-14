@@ -26,6 +26,13 @@ class Create extends Component
     {
         $this->password = $this->date_of_birth;
 
+        $required_fields = [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255','unique:users'],
+        ];
+
+        $validated = $this->validate($required_fields);
+
         $user = User::create([
             'name' => $this->name,
             'email' => $this->email,
