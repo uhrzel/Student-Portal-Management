@@ -24,20 +24,26 @@
                             @php
                             $total_score = null;
                             $temp_rating = [1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0];
+                            
+                            $computed_score = 0;
                             @endphp
                             @foreach($phase->questions as $question)
                             <div class="bg-gray-50 p-4 rounded-lg">
                                 <p class="font-medium text-gray-800 mb-4">{{ $question->question }}</p>
 
                                 @php
+                                
                                 $ratings = array_replace([1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0], $question->aggregatedResponses);
                                 
-                                
+                                $tmp_score = 0;
                                 foreach(json_decode(json_encode($ratings),true) as $index => $rates){
-                                   $temp_rating[$index] = $temp_rating[$index] + $rates;
+                                    
+                                    $tmp_score += ($index * $rates);
+
                                 }
 
-                               
+                                $computed_score += $tmp_score / $responses->count();
+                              
                                 @endphp
                              
                                 <div class="h-64">
@@ -122,14 +128,10 @@
                     </section>
                         <!--getting the mean of per category-->
                         @php
-                      
-                        foreach(json_decode(json_encode($temp_rating),true) as $key => $tmp_rate){
-                            
-                            $total_score += $key * $tmp_rate;
-                        }
                        
-                        $mean = ($total_score / count($phase->questions) );
-                        echo '<h1 style="color:#2b8c06"><strong>Mean:</strong>'.$mean.'</h1>';
+                      
+                        $mean = ($computed_score / count($phase->questions) );
+                        echo '<h1 style="color:#2b8c06"><strong>Mean:</strong>'.round($mean,2).'</h1>';
                         $over_all_mean += $mean; 
                         @endphp
                        
@@ -145,7 +147,7 @@
                         @elseif ((round(($over_all_mean / count($phases)),2) > 2.50) && (round(($over_all_mean / count($phases)),2) <= 3.50) )
                         <span class="bg-green-500 text-white p-2 rounded">Satisfactory</span>
                         @else
-                        <span class="bg-green-500 text-white p-2 rounded">VS</span>
+                        <span class="bg-green-500 text-white p-2 rounded">Very Satisfactory</span>
                         @endif
                     </h2>
                 </div>
